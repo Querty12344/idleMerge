@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e966f8ad87c94d8d88af54d301ce856f, type: 3}
+  m_Name: Ore 5
+  m_EditorClassIdentifier: 
+  Level: 0
+  HitFxReference:
+    m_AssetGUID: cee2f5db09c22414eb16e97cbd1d6283
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  BreakFxReference:
+    m_AssetGUID: cee2f5db09c22414eb16e97cbd1d6283
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  ID: cxwwrwrvwr
+  HP: 100
+  PrefabReference:
+    m_AssetGUID: cee2f5db09c22414eb16e97cbd1d6283
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  MoneyReward: 0
+  IsGem: 1
+  GemReward: {fileID: 0}
