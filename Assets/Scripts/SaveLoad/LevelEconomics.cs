@@ -49,10 +49,5 @@ namespace GamePlay
             return false;
         }
 
-        public void GetWorkerLevel(int buyCount, out int level, out float progress)
-        {
-            level = (int)Math.Floor((double)buyCount / _economyData.WorkerToUpdateCount);
-            progress = (float)(buyCount % _economyData.WorkerToUpdateCount) / _economyData.WorkerToUpdateCount;
-        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using AssetManagement;
+using StaticData;
 
 namespace DefaultNamespace
 {
@@ -13,5 +14,6 @@ namespace DefaultNamespace
         WorkerTypes GetActiveWorkerType();
         int GetLevelNumber();
         void NotifiObservers();
+        FieldData GetFieldData();
     }
 }

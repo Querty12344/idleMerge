@@ -1,6 +1,8 @@
 using AssetManagement;
 using Curtain;
 using DefaultNamespace;
+using DefaultNamespace.Balance;
+using DefaultNamespace.Field;
 using DefaultNamespace.FieldGenerator;
 using DefaultNamespace.GamePlay.Ore;
 using DefaultNamespace.InputService;
@@ -21,6 +23,9 @@ public class UntitledInstaller : MonoInstaller
 
     public override void InstallBindings()
     {
+        Container.Bind<IEconomyCalculator>().To<EconomyCalculator>().AsSingle();
+        Container.Bind<IEffectsFactory>().To<EffectsFactory>().AsSingle();
+        Container.Bind<IFieldConstructor>().To<FieldConstructor>().AsSingle();
         Container.Bind<IFieldGenerator>().To<FieldGenerator>().AsSingle();
         Container.Bind<IWorkerMerger>().To<WorkerMerger>().AsSingle();
         Container.Bind<IRandomService>().To<RandomServiceService>().AsSingle();

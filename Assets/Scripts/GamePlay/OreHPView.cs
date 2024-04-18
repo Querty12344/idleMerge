@@ -38,18 +38,21 @@ namespace DefaultNamespace.GamePlay.Ore
         {
             TimeSpan timeSpan = TimeSpan.FromSeconds((int)time);
             string timeText = "";
+            if (timeSpan.Seconds > 0)
+            {
+                timeText = timeSpan.Seconds.ToString() + " sec.";
+            }
+
+            if (timeSpan.Minutes > 0)
+            {
+                timeText = timeSpan.Minutes.ToString() + " m";
+            }
+
             if (timeSpan.Hours > 0)
             {
                 timeText = ">1h";
             }
-            if (timeSpan.Minutes > 0)
-            {
-                timeText = timeSpan.Minutes.ToString() + "m";
-            }
-            if (timeSpan.Seconds > 0)
-            {
-                timeText = timeSpan.Seconds.ToString() + " s";
-            }
+
             _timeText.text = timeText;
             
         }

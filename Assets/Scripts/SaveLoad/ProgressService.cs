@@ -1,4 +1,6 @@
-﻿using AssetManagement;
+﻿using System.Collections.Generic;
+using AssetManagement;
+using StaticData;
 using UnityEngine;
 
 namespace DefaultNamespace
@@ -72,6 +74,12 @@ namespace DefaultNamespace
                 if (x != null) x.OnLoaded(ref _progress);
             });
         }
+
+        public FieldData GetFieldData()
+        {
+            return _progress.FieldData;
+        }
+
 
         private void SetDefaultProgress()
         {

@@ -1,4 +1,5 @@
-﻿using AssetManagement;
+﻿using System;
+using AssetManagement;
 using StaticData;
 using UIManagement;
 
@@ -13,4 +14,8 @@ public interface IStaticDataService
     EconomyData GetEconomyData();
     FieldGenerationSettings GetFieldGenerationSettings();
     OreData[] GetAllOre();
+    string[] GetBuildingsIDs();
+    
+    BuildingData GetBuilding(string id);
+    
 }

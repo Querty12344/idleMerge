@@ -32,7 +32,7 @@ namespace StateManagement.States
 
         private void InitScene()
         {
-            _uiFactory.Initialize(_levelEconomics);
+            _uiFactory.Initialize();
             _uiService.OpenWindow(WindowTypes.City);
         }
     }

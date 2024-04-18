@@ -41,7 +41,7 @@ namespace StateManagement.States
 
         private void InitScene()
         {
-            _uiFactory.Initialize(_levelEconomics);
+            _uiFactory.Initialize();
             _gameFactory.Initialize();
             _uiService.OpenWindow(WindowTypes.HUD);
             _progressService.NotifiObservers();

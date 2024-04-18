@@ -10,5 +10,6 @@
         public const string Ore = "Ore";
         public const string EconomyData = "Economy/Economy";
         public const string GenerationSettings = "FieldGenerationSettings/FieldGenerationSettings";
+        public const string BuildingData = "BuildingData";
     }
 }

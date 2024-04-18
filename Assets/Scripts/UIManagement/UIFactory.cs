@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using AssetManagement;
 using DefaultNamespace;
+using DefaultNamespace.Balance;
 using GamePlay;
 using StateManagement;
 using UnityEngine;
@@ -16,19 +17,21 @@ namespace UIManagement
         private readonly DiContainer _container;
         private ILevelEconomics _levelEconomics;
         private UIMediator _uiMediator;
+        private readonly IEconomyCalculator _economyCalculator;
 
-        public UIFactory(DiContainer container, IAssetProvider assetProvider, IStaticDataService staticData,
+        public UIFactory(DiContainer container, IEconomyCalculator economyCalculator, ILevelEconomics levelEconomics,IAssetProvider assetProvider, IStaticDataService staticData,
             ProgressSaversReadersPool progressPool)
         {
+            _economyCalculator = economyCalculator;
+            _levelEconomics = levelEconomics;
             _container = container;
             _progressPool = progressPool;
             _assetProvider = assetProvider;
             _staticData = staticData;
         }
 
-        public void Initialize(ILevelEconomics levelEconomics)
+        public void Initialize()
         {
-            _levelEconomics = levelEconomics;
             _uiMediator = Object.Instantiate(_staticData.GetUIBase());
             _uiMediator.Construct(_container.Resolve<IGameFactory>(), _container.Resolve<IStateMachine>(),
                 _container.Resolve<IUIService>());
@@ -50,7 +53,7 @@ namespace UIManagement
             var components = window.WindowComponents;
             foreach (var component in components)
             {
-                if (component is UIEconomyElement element) element.Construct(_levelEconomics, _uiMediator);
+                if (component is UIEconomyElement element) element.Construct(_economyCalculator,_levelEconomics, _uiMediator);
                 if (component is UIElement uiElement) uiElement.Construct(_uiMediator);
             }
 

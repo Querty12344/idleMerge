@@ -22,12 +22,26 @@ namespace DefaultNamespace.GamePlay.Ore
         public event Action<int, GemData> GetReward;
         public event Action Break;
         public bool Brouken = false;
+        private IEffectsFactory _effectsFactory;
         public string ID { get; private set; }
 
         public float GetHpInPercent() => _hp / _defaultHP;
         public float GetCurrentHP() => _hp;
         public int GetLevel() => _level;
-        
+
+
+        public void Construct(IEffectsFactory effectsFactory,int level , string id, float hp, int coinReward = 0,
+            GemData gemData = null)
+        {
+            _effectsFactory = effectsFactory;
+            _defaultHP = hp;
+            _level = level;
+            ID = id;
+            _hp = hp;
+            _coinReward = coinReward;
+            _gemData = gemData;
+            StartCoroutine(UpdateMiners());
+        }
 
         private IEnumerator UpdateMiners()
         {
@@ -50,23 +64,9 @@ namespace DefaultNamespace.GamePlay.Ore
             
         }
 
-        public void Construct(int level , string id, GameObject breakFX, float hp, int coinReward = 0,
-            GemData gemData = null)
-        {
-            _defaultHP = hp;
-            _level = level;
-            ID = id;
-            _breakFX = breakFX;
-            _hp = hp;
-            _coinReward = coinReward;
-            _gemData = gemData;
-            StartCoroutine(UpdateMiners());
-        }
-
 
         private void OnBreak()
         {
-            //Instantiate(_breakFX, transform.position, Quaternion.identity);
             Destroy(gameObject);
             Brouken = true;
             GetReward?.Invoke(_coinReward, _gemData);

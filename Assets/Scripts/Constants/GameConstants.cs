@@ -8,6 +8,7 @@
         public const float DragLerp = 0.3f;
         public const float FlyHeight = 0.3f;
         public const float MinersUpdateInterval = 0.1f;
-        public static string CitySceneName = "City";
+        public const int MaxRandomIterations = 20;
+        public const string CitySceneName = "City";
     }
 }

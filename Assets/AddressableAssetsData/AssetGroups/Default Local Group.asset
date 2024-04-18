@@ -48,6 +48,11 @@ MonoBehaviour:
     m_SerializedLabels:
     - default
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a1f7f91f0ccb19644a59033abd03571a
+    m_Address: Assets/PrefabsTemple/Building.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 224964a68b810c74590e473a1060aa43, type: 2}
   m_SchemaSet:

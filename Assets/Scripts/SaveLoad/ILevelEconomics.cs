@@ -11,6 +11,5 @@ namespace GamePlay
         void Clear();
         void AddMoney(int amount);
         bool TryGetMoney(int cost);
-        void GetWorkerLevel(int buyCount, out int i, out float f);
     }
 }

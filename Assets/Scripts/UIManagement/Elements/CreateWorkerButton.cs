@@ -1,4 +1,5 @@
-﻿using GamePlay;
+﻿using System;
+using GamePlay;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,13 +11,13 @@ namespace UIManagement
         [SerializeField] private Image _levelCompliteIndicator;
         [SerializeField] private TMP_Text _levelText;
 
-        protected override void Buy()
+        protected override void CompletePurchase()
         {
-            base.Buy();
-            _levelEconomics.GetWorkerLevel(_buyCount, out var level, out var toNextProgress);
-            _uiMediator.CreateWorker(_buyCount);
-            _levelCompliteIndicator.fillAmount = toNextProgress;
-            _levelText.text = level.ToString();
+            
+            int workerLevel = GetLevel(); 
+            _uiMediator.CreateWorker(workerLevel);
+            _levelCompliteIndicator.fillAmount = GetProgress();
+            _levelText.text = workerLevel.ToString();
         }
     }
 }

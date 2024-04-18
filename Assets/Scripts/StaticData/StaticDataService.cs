@@ -9,12 +9,13 @@ namespace StaticData
 {
     public class StaticDataService : IStaticDataService
     {
+        private UIMediator _uiMediator;
         private EconomyData _economyData;
         private GameData _gameData;
         private GemData[] _gems;
         private bool _initialized;
+        private Dictionary< string, BuildingData> _buildingData;
         private Dictionary<string, OreData> _ore;
-        private UIMediator _uiMediator;
         private Dictionary<WindowTypes, WindowData> _windows;
         private Dictionary<WorkerTypes, List<WorkerData>> _workers;
         private FieldGenerationSettings _generationSettings;
@@ -22,6 +23,7 @@ namespace StaticData
         {
             if (_initialized) return;
             _initialized = true;
+            _buildingData = Resources.LoadAll<BuildingData>(AssetPath.BuildingData).ToDictionary(x => x.ID , x => x);
             _generationSettings = Resources.Load<FieldGenerationSettings>(AssetPath.GenerationSettings);
             _economyData = Resources.Load<EconomyData>(AssetPath.EconomyData);
             _uiMediator = Resources.Load<UIMediator>(AssetPath.UIMediator);
@@ -64,6 +66,18 @@ namespace StaticData
         {
             return _ore.Values.ToArray();
         }
+
+        public string[] GetBuildingsIDs()
+        {
+            return _buildingData.Keys.ToArray();
+        }
+
+        public BuildingData GetBuilding(string id)
+        {
+            return _buildingData[id];
+        }
+        
+        
 
         public WindowData GetWindow(WindowTypes type)
         {

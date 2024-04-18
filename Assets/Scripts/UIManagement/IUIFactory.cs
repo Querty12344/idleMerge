@@ -6,7 +6,7 @@ namespace UIManagement
     public interface IUIFactory
     {
         void Cleanup();
-        void Initialize(ILevelEconomics levelEconomics);
+        void Initialize();
         Task<WindowBase> Create(WindowTypes type);
     }
 }

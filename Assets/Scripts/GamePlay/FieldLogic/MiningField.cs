@@ -9,16 +9,17 @@ using UnityEngine;
 
 namespace DefaultNamespace.Field
 {
-    public class MiningField : MonoBehaviour, IProgressReader, IProgressSaver
+    public class MiningField : MonoBehaviour, IProgressSaver
     {
+        [SerializeField] private Transform[] _buildingPlaces;
         [SerializeField] private FieldCell[] _cells;
         [SerializeField] private FieldRaycast _fieldRaycast;
         private IGameFactory _gameFactory;
         private IFieldGenerator _fieldGenerator;
 
-        public void OnLoaded(ref PlayerProgress progress)
+        public IReadOnlyCollection<FieldCell> Cells
         {
-            RestoreField(progress.FieldData);
+            get { return _cells; }
         }
 
         public void Save(ref PlayerProgress progress)
@@ -40,30 +41,6 @@ namespace DefaultNamespace.Field
             _fieldGenerator = fieldGenerator;
             _gameFactory = gameFactory;
             foreach (var fieldCell in _cells) fieldCell.Construct(workerMerger);
-        }
-
-        private void RestoreField(FieldData data)
-        {
-            if (data == null || _cells?.Length != data?.Cells?.Length)
-            {
-                data = _fieldGenerator.FillField(_cells.ToList().Select(x => x.Weight).ToArray());
-            }
-            for (var i = 0; i < _cells.Length; i++) RestoreCell(_cells[i], data.Cells[i]);
-        }
-
-        private void RestoreCell(FieldCell cell, CellData data)
-        {
-            cell.Clear();
-            switch (data.CellType)
-            {
-                case CellType.ore:
-                    _gameFactory.CreateOre(data.CellContentID, cell);
-                    break;
-                case CellType.worker:
-                    data.CellContentID.WorkerFromString(out var level, out var type);
-                    _gameFactory.CreateWorker(type, level, cell);
-                    break;
-            }
         }
 
         public void Clear()

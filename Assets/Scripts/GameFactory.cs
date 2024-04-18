@@ -1,13 +1,18 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using AssetManagement;
 using DefaultNamespace.Field;
 using DefaultNamespace.FieldGenerator;
 using DefaultNamespace.GamePlay.Ore;
+using DefaultNamespace.GamePlay.Ore.Buillding;
 using DefaultNamespace.GamePlay.Ore.WorkerComponents;
 using DefaultNamespace.InputService;
 using DefaultNamespace.LevelPositionHandler;
+using Extensions;
+using RandomManagement;
 using StaticData;
 using UnityEngine;
+using UnityEngine.Rendering;
 using Zenject;
 
 namespace DefaultNamespace
@@ -21,10 +26,12 @@ namespace DefaultNamespace
         private readonly IStaticDataService _staticData;
         private LevelScene _levelScene;
         private MiningField _miningField;
+        private readonly IRandomService _randomService;
 
-        public GameFactory(DiContainer container, ProgressSaversReadersPool progressPool, IAssetProvider asset,
-            IStaticDataService staticData, IProgressService progressService)
+        public GameFactory( DiContainer container,  ProgressSaversReadersPool progressPool, IAssetProvider asset,
+            IStaticDataService staticData, IProgressService progressService , IRandomService randomService)
         {
+            _randomService = randomService;
             _container = container;
             _progressPool = progressPool;
             _asset = asset;
@@ -35,15 +42,31 @@ namespace DefaultNamespace
         public void Initialize()
         {
             _levelScene = Object.FindObjectOfType<LevelScene>();
+            ConstructField();
+            ConstrucBuilding();
+        }
+
+        private void ConstrucBuilding()
+        {
+            string[] buildingsIDs = _staticData.GetBuildingsIDs();
+            int[] choosen = _randomService.GetRandomArray(0 , buildingsIDs.Length , _levelScene.BuildingPlaces.Length);
+            for (var i = 0; i < _levelScene.BuildingPlaces.Length; i++)
+            {
+                var buildingPlace = _levelScene.BuildingPlaces[i];
+                CreateBuilding(buildingsIDs[choosen[i]], buildingPlace);
+            }
+        }
+
+        private void ConstructField()
+        {
             _miningField = _levelScene.Field;
             _miningField.Construct(this, _container.Resolve<IWorkerMerger>(), _container.Resolve<IFieldGenerator>());
-            _progressPool.AddProgressReader(_miningField);
-            _progressPool.AddProgressSaver(_miningField);
+            _progressPool.AddProgressSaver(_miningField); 
+            _container.Resolve<IFieldConstructor>().RestoreField(_miningField);
         }
 
         public void Cleanup()
         {
-            _progressPool.RemoveReader(_miningField);
             _progressPool.RemoveSaver(_miningField);
             _miningField.Clear();
         }
@@ -74,12 +97,16 @@ namespace DefaultNamespace
                 Debug.LogError("NULLLL");
             }
             var ore = Object.Instantiate(prefab, at.GetRoot().position, Quaternion.identity).GetComponent<Ore>();
-
-//            var hitFx = await _asset.GetAsset<GameObject>(data.HitFxReference);
-  //          var breakFx = await _asset.GetAsset<GameObject>(data.BreakFxReference);
-            ore.Construct(data.Level ,data.ID , null, data.HP, data.MoneyReward, data.GemReward);
+            ore.Construct(_container.Resolve<IEffectsFactory>() ,data.Level ,data.ID , data.HP, data.MoneyReward, data.GemReward);
             at.Fill(ore);
             return ore;
+        }
+        public async Task<Building> CreateBuilding( string id, Transform at)
+        {
+            BuildingData data = _staticData.GetBuilding(id);     
+            GameObject prefab = await _asset.Load<GameObject>(data.PrefabReference);
+            Building building = Object.Instantiate(prefab, at.position , at.rotation).GetComponent<Building>();
+            return building;
         }
 
         public void CreateRandom(int level)
